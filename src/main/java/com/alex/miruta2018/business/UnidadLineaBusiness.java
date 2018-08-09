@@ -6,6 +6,7 @@
 package com.alex.miruta2018.business;
 
 import com.alex.miruta2018.model.UnidadLinea;
+import com.alex.miruta2018.model.support.RecorridoCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteUpdate;
 import com.alex.miruta2018.services.UnidadLineaService;
@@ -56,6 +57,14 @@ public class UnidadLineaBusiness {
     @RequestMapping(value = "/update", method = POST)
     public ResponseEntity<UnidadLinea> updateUniTransporte(@RequestBody UnidadTransporteUpdate unidad) {
         return new ResponseEntity(serviceUnidadLinea.update(unidad), HttpStatus.OK);
+    }
+    
+    // ******************************* *Secundarias ************************************
+    // *********************************************************************************
+    
+    @RequestMapping(value = "/setRecorrido", method = POST)
+    public ResponseEntity<UnidadLinea> setRecorrido(@RequestBody RecorridoCreate recorrido) {
+        return new ResponseEntity(serviceUnidadLinea.updateRecorrido(recorrido), HttpStatus.OK);
     }
     
     // ************************************ SOPORTE ************************************

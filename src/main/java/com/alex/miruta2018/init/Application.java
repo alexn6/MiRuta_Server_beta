@@ -140,8 +140,8 @@ public class Application {
 //            unidad = new UnidadLinea("Linea2", LocalTime.of(7, 30), LocalTime.of(22, 15), 15, 11.00f, repoEmpresa.findByNombre("Ceferino").get());
 //            repoUniLinea.save(unidad);
             
-            unidad = new UnidadLinea("Linea3", LocalTime.of(8, 0), LocalTime.of(21, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
-            repoUniLinea.save(unidad);
+//            unidad = new UnidadLinea("Linea3", LocalTime.of(8, 0), LocalTime.of(21, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
+//            repoUniLinea.save(unidad);
 
             // buscamos todas las paradas a modo de prueba
 //            log.info("**** Unidades de transporte guardadas: ****");

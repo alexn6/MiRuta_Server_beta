@@ -99,6 +99,13 @@
             <version>2.1.7.2</version>
         </dependency>
         
+<!--        serializacion y desearilizacion de geom-->
+        <dependency>
+            <groupId>com.bedatadriven</groupId>
+            <artifactId>jackson-datatype-jts</artifactId>
+            <version>2.4</version>
+        </dependency>
+        
 <!--            #################################################-->
 <!--            #################################################-->
 

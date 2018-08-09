@@ -5,6 +5,7 @@
  */
 package com.alex.miruta2018.setting;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +18,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
+//    del anterior proyecto (verificar si es necesario)
+//    @Bean
+//    public ObjectMapper buildObjectMapper() {
+//       return new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//    }
+    
     @Bean
-    public ObjectMapper buildObjectMapper() {
-       return new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    public JtsModule jtsModule()
+    {
+        return new JtsModule();
     }
 }

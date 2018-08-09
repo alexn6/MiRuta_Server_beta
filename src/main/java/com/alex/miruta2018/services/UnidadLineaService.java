@@ -7,14 +7,20 @@ package com.alex.miruta2018.services;
 
 import com.alex.miruta2018.model.Empresa;
 import com.alex.miruta2018.model.UnidadLinea;
+import com.alex.miruta2018.model.support.RecorridoCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteUpdate;
 import com.alex.miruta2018.repo.crud.RepositorioEmpresaCrud;
 import com.alex.miruta2018.repo.crud.RepositorioUnidadLineaCrud;
 import com.alex.miruta2018.repo.queries.RepositorioUnidadLineaJpa;
+import com.alex.miruta2018.services.support.RecorridoService;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +37,8 @@ public class UnidadLineaService {
     private RepositorioUnidadLineaJpa repoUniTransporteQueries;
     @Autowired
     private RepositorioEmpresaCrud repoEmpresa;
+    
+    private static final GeometryFactory factoryGeom = new GeometryFactory();
     
     
     // ************************************ ABMC ************************************
@@ -72,6 +80,35 @@ public class UnidadLineaService {
     // ver si mandar algun mje cuando se elimina correctamente
     public void delete(Long id){
         repoUniLinea.deleteById(id);
+    }
+    
+    // ******************************** Secundarias ************************************
+    // *********************************************************************************
+    
+    public UnidadLinea updateRecorrido(RecorridoCreate recorrido) throws NoSuchElementException{
+        
+        UnidadLinea unidad = repoUniLinea.findByNombre(recorrido.getNombreLinea()).get();
+        System.out.println("RecorridoNuevoService ---> unidad: "+unidad.toString());
+        Coordinate[] coordenadas = RecorridoService.getRecorridoPointJTS(recorrido.getPuntos_ida());
+//        Point[] coordenadas = RecorridoServiceSupport.getRecorridoPoint(recorrido.getPuntos_ida());
+//        Point[] coordenadas = {};
+        // creamos el recorrido de ida
+        LineString recorridoGeom = factoryGeom.createLineString(coordenadas);
+//        LineString recorridoGeom = new LineString(coordenadas);
+        System.out.println("RecorridoNuevoService ---> Se creo el reco IDA");
+        unidad.setRecorridoIda(recorridoGeom);
+        System.out.println("RecorridoNuevoService ---> Se seteo el reco IDA");
+        System.out.println(recorridoGeom);
+        
+        coordenadas = RecorridoService.getRecorridoPointJTS(recorrido.getPuntos_vuelta());
+        // creamos el recorrido de ida
+        recorridoGeom = factoryGeom.createLineString(coordenadas);
+        System.out.println("RecorridoNuevoService ---> Se creo el reco VUELTA");
+        System.out.println(recorridoGeom);
+        unidad.setRecorridoVuelta(recorridoGeom);
+        System.out.println("RecorridoNuevoService ---> Se seteo el reco VUELTA");
+        
+        return repoUniLinea.save(unidad);
     }
     
     
