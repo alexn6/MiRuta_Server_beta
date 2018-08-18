@@ -8,6 +8,7 @@ package com.alex.miruta2018.services;
 import com.alex.miruta2018.model.Empresa;
 import com.alex.miruta2018.model.UnidadLinea;
 import com.alex.miruta2018.model.support.RecorridoCreate;
+import com.alex.miruta2018.model.support.RespRecorridoUnidadLinea;
 import com.alex.miruta2018.model.support.UnidadTransporteCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteUpdate;
 import com.alex.miruta2018.repo.crud.RepositorioEmpresaCrud;
@@ -87,30 +88,64 @@ public class UnidadLineaService {
     
     public UnidadLinea updateRecorrido(RecorridoCreate recorrido) throws NoSuchElementException{
         
+        System.out.println("Entro a la capa de SERVICIO");
+        System.out.println(recorrido.toString());
+        
         UnidadLinea unidad = repoUniLinea.findByNombre(recorrido.getNombreLinea()).get();
         System.out.println("RecorridoNuevoService ---> unidad: "+unidad.toString());
         Coordinate[] coordenadas = RecorridoService.getRecorridoPointJTS(recorrido.getPuntos_ida());
-//        Point[] coordenadas = RecorridoServiceSupport.getRecorridoPoint(recorrido.getPuntos_ida());
-//        Point[] coordenadas = {};
         // creamos el recorrido de ida
         LineString recorridoGeom = factoryGeom.createLineString(coordenadas);
+        recorridoGeom.setSRID(4326);
 //        LineString recorridoGeom = new LineString(coordenadas);
-        System.out.println("RecorridoNuevoService ---> Se creo el reco IDA");
+//        System.out.println("RecorridoNuevoService ---> Se creo el reco IDA");
         unidad.setRecorridoIda(recorridoGeom);
-        System.out.println("RecorridoNuevoService ---> Se seteo el reco IDA");
+//        System.out.println("RecorridoNuevoService ---> Se seteo el reco IDA");
         System.out.println(recorridoGeom);
         
         coordenadas = RecorridoService.getRecorridoPointJTS(recorrido.getPuntos_vuelta());
         // creamos el recorrido de ida
         recorridoGeom = factoryGeom.createLineString(coordenadas);
-        System.out.println("RecorridoNuevoService ---> Se creo el reco VUELTA");
+        recorridoGeom.setSRID(4326);
+//        System.out.println("RecorridoNuevoService ---> Se creo el reco VUELTA");
         System.out.println(recorridoGeom);
         unidad.setRecorridoVuelta(recorridoGeom);
-        System.out.println("RecorridoNuevoService ---> Se seteo el reco VUELTA");
+//        System.out.println("RecorridoNuevoService ---> Se seteo el reco VUELTA");
         
         return repoUniLinea.save(unidad);
     }
     
+    
+    public List<RespRecorridoUnidadLinea> getAllRecorrido(){
+        
+        List<RespRecorridoUnidadLinea> recorridoUnidades = new ArrayList<>();
+        
+        // recuperamos todas las unidades y le sacamos los datos requeridos para enviar al cliente
+        Iterable<UnidadLinea> unidades = repoUniLinea.findAll();
+        List<UnidadLinea> listUnidades = new ArrayList<>();
+        unidades.forEach(listUnidades::add);
+        
+        RespRecorridoUnidadLinea datosRecorridoAux;
+        
+        for (UnidadLinea unidad : listUnidades) {
+            datosRecorridoAux = new RespRecorridoUnidadLinea(unidad.getNombre(), unidad.getRecorridoIda(), unidad.getRecorridoVuelta());
+            recorridoUnidades.add(datosRecorridoAux);
+        }
+        
+        System.out.println("Recorrido del servicio: ");
+        System.out.println(recorridoUnidades.toArray());
+        return recorridoUnidades;
+    }
+    
+    public RespRecorridoUnidadLinea getRecorridoById(Long idUnidad){
+        
+        RespRecorridoUnidadLinea recorridoUnidad;
+        UnidadLinea unidad = repoUniLinea.findById(idUnidad).get();
+        
+        recorridoUnidad = new RespRecorridoUnidadLinea(unidad.getNombre(), unidad.getRecorridoIda(), unidad.getRecorridoVuelta());
+        
+        return recorridoUnidad;
+    }
     
     // ************************************ SOPORTE ************************************
     // *********************************************************************************

@@ -7,6 +7,7 @@ package com.alex.miruta2018.business;
 
 import com.alex.miruta2018.model.UnidadLinea;
 import com.alex.miruta2018.model.support.RecorridoCreate;
+import com.alex.miruta2018.model.support.RespRecorridoUnidadLinea;
 import com.alex.miruta2018.model.support.UnidadTransporteCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteUpdate;
 import com.alex.miruta2018.services.UnidadLineaService;
@@ -64,7 +65,16 @@ public class UnidadLineaBusiness {
     
     @RequestMapping(value = "/setRecorrido", method = POST)
     public ResponseEntity<UnidadLinea> setRecorrido(@RequestBody RecorridoCreate recorrido) {
+        System.out.println(recorrido.toString());
         return new ResponseEntity(serviceUnidadLinea.updateRecorrido(recorrido), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/recorrido", method = GET)
+    public ResponseEntity<RespRecorridoUnidadLinea> getRecorrido(@RequestParam(value = "id", required = false) Long id) {
+        if(id == null){
+            return new ResponseEntity(serviceUnidadLinea.getAllRecorrido(), HttpStatus.OK);
+        }
+        return new ResponseEntity(serviceUnidadLinea.getRecorridoById(id), HttpStatus.OK);
     }
     
     // ************************************ SOPORTE ************************************
