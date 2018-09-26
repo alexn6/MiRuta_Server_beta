@@ -13,6 +13,8 @@ import com.alex.miruta2018.support.ConvertResponseWebSrevice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.LineString;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -91,6 +93,8 @@ public class ConsumeServiceWeb {
         String urlService = OSRM.URL_RUTA + puntoIni.get(0) + "," + puntoIni.get(1) +
                 ";" + puntoFin.get(0) + "," + puntoFin.get(1)+"?"+ OSRM.TIPO_DATO_RUTA_RECIBIDO;
         
+        System.out.println("Url service RUTA: " +urlService);
+        
         Mono<RespRuta> result = webClientRouting.get().uri(urlService)
                                      .retrieve()
                                      .bodyToMono(RespRuta.class);
@@ -105,7 +109,65 @@ public class ConsumeServiceWeb {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String jsonResponse = ow.writeValueAsString(routes.get("geometry"));
         
+        // ############################# PRUEBA ####################################
+//        System.out.println("JsonResponse: "+jsonResponse);
+//        System.out.println("Tamaño JsonResponse: "+jsonResponse.length());
+//        // el 18 serian los caracteres q sobran del string recibido
+//        int finCoordenadas = jsonResponse.length() -26;
+//        int iniCoordenadas = 20;
+//        // recortamos el string de ambos lados
+//        String coordenadasString = jsonResponse.substring(iniCoordenadas, finCoordenadas);
+//        System.out.println("String coord: "+coordenadasString);
+        //##########################################################################
+        
         return jsonResponse;
         
+    }
+    
+    public String getRecorridoRuta(LineString recorrido) throws JsonProcessingException{
+        
+        String setCoordenadas = getStringCoordenadas(recorrido);
+        
+        String urlService = OSRM.URL_RUTA + setCoordenadas + OSRM.TIPO_DATO_RUTA_RECIBIDO;
+        
+        System.out.println("Url service RECORRIDO RUTA: " +urlService);
+        
+        Mono<RespRuta> result = webClientRouting.get().uri(urlService)
+                                     .retrieve()
+                                     .bodyToMono(RespRuta.class);
+        RespRuta response = result.block();
+        
+        // obtenemos la 1ra ruta de la resp del servicio web
+        LinkedHashMap routes = (LinkedHashMap)response.getRoutes().get(0);
+
+        System.out.println("RUTA RECORRIDO: "+routes.get("geometry"));
+        
+        // pasamos el dato a json
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String jsonResponse = ow.writeValueAsString(routes.get("geometry"));
+        
+        return jsonResponse;
+    }
+    
+    // ####################################################################
+    // ######################### SOPORTE ##################################
+    
+    private String getStringCoordenadas(LineString ruta){
+        
+        String coordenadas = "";
+        Coordinate[] coordRuta = ruta.getCoordinates();
+        Coordinate coordAux;
+        
+        
+        for (int i = 0; i < (coordRuta.length - 1); i++) {
+            coordAux = coordRuta[i];
+            coordenadas += coordAux.getOrdinate(0) + "," + coordAux.getOrdinate(1) +";";
+        }
+        
+        // agregamos la ultima coordenada
+        coordAux = coordRuta[coordRuta.length - 1];
+        coordenadas += coordAux.getOrdinate(0) + "," + coordAux.getOrdinate(1) +"?";
+        
+        return coordenadas;
     }
 }

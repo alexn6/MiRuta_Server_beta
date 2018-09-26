@@ -15,6 +15,7 @@ import com.alex.miruta2018.repo.crud.RepositorioEmpresaCrud;
 import com.alex.miruta2018.repo.crud.RepositorioUnidadLineaCrud;
 import com.alex.miruta2018.repo.queries.RepositorioUnidadLineaJpa;
 import com.alex.miruta2018.services.support.RecorridoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
@@ -38,6 +39,8 @@ public class UnidadLineaService {
     private RepositorioUnidadLineaJpa repoUniTransporteQueries;
     @Autowired
     private RepositorioEmpresaCrud repoEmpresa;
+    @Autowired
+    private ConsumeServiceWeb consumerServicesWeb;
     
     private static final GeometryFactory factoryGeom = new GeometryFactory();
     
@@ -116,20 +119,48 @@ public class UnidadLineaService {
     }
     
     
-    public List<RespRecorridoUnidadLinea> getAllRecorrido(){
+    public List<RespRecorridoUnidadLinea> getAllRecorrido() throws JsonProcessingException{
         
         List<RespRecorridoUnidadLinea> recorridoUnidades = new ArrayList<>();
         
         // recuperamos todas las unidades y le sacamos los datos requeridos para enviar al cliente
         Iterable<UnidadLinea> unidades = repoUniLinea.findAll();
         List<UnidadLinea> listUnidades = new ArrayList<>();
+        // buscamos el recorrido ruta de cada recorrido
+        String jsonResponseRecorridoRuta;
         unidades.forEach(listUnidades::add);
+        LineString recorridoIdaAux, recorridoVueltaAux;
+        LineString recorridoIdaNuevo, recorridoVueltaNuevo;
         
         RespRecorridoUnidadLinea datosRecorridoAux;
         
+        // vamos creando los nuevos recorrido para mandarlos
         for (UnidadLinea unidad : listUnidades) {
-            datosRecorridoAux = new RespRecorridoUnidadLinea(unidad.getNombre(), unidad.getRecorridoIda(), unidad.getRecorridoVuelta());
-            recorridoUnidades.add(datosRecorridoAux);
+            recorridoIdaAux = unidad.getRecorridoIda();
+            recorridoVueltaAux = unidad.getRecorridoVuelta();
+//            System.out.println("Recorrido ida recuperado DB:");
+//            System.out.println(recorridoIdaAux.toString());
+//            System.out.println("Recorrido vuelta recuperado DB:");
+//            System.out.println(recorridoVueltaAux.toString());
+//            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoIdaAux);
+//            recorridoIdaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+//            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoVueltaAux);
+//            recorridoVueltaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+//            datosRecorridoAux = new RespRecorridoUnidadLinea(unidad.getNombre(), recorridoIdaNuevo, recorridoVueltaNuevo);
+//            recorridoUnidades.add(datosRecorridoAux);
+            
+            if(recorridoIdaAux != null){
+                System.out.println("Recorrido ida recuperado DB:");
+                System.out.println(recorridoIdaAux.toString());
+                System.out.println("Recorrido vuelta recuperado DB:");
+                System.out.println(recorridoVueltaAux.toString());
+                jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoIdaAux);
+                recorridoIdaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+                jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoVueltaAux);
+                recorridoVueltaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+                datosRecorridoAux = new RespRecorridoUnidadLinea(unidad.getNombre(), recorridoIdaNuevo, recorridoVueltaNuevo);
+                recorridoUnidades.add(datosRecorridoAux);
+            }
         }
         
         System.out.println("Recorrido del servicio: ");
@@ -137,14 +168,63 @@ public class UnidadLineaService {
         return recorridoUnidades;
     }
     
-    public RespRecorridoUnidadLinea getRecorridoById(Long idUnidad){
+    public RespRecorridoUnidadLinea getRecorridoById(Long idUnidad) throws JsonProcessingException{
         
-        RespRecorridoUnidadLinea recorridoUnidad;
-        UnidadLinea unidad = repoUniLinea.findById(idUnidad).get();
+        RespRecorridoUnidadLinea recorridoUnidadSeleccionada;
         
-        recorridoUnidad = new RespRecorridoUnidadLinea(unidad.getNombre(), unidad.getRecorridoIda(), unidad.getRecorridoVuelta());
+        // recuperamos todas las unidades y le sacamos los datos requeridos para enviar al cliente
+        UnidadLinea unidadSeleccionada = repoUniLinea.findById(idUnidad).get();
+//        List<UnidadLinea> listUnidades = new ArrayList<>();
+        // buscamos el recorrido ruta de cada recorrido
+        String jsonResponseRecorridoRuta;
+//        unidades.forEach(listUnidades::add);
+        LineString recorridoIdaAux, recorridoVueltaAux;
+        LineString recorridoIdaNuevo, recorridoVueltaNuevo;
         
-        return recorridoUnidad;
+//        RespRecorridoUnidadLinea datosRecorridoAux;
+        
+        // vamos creando los nuevos recorrido para mandarlos
+//        for (UnidadLinea unidad : listUnidades) {
+            recorridoIdaAux = unidadSeleccionada.getRecorridoIda();
+            recorridoVueltaAux = unidadSeleccionada.getRecorridoVuelta();
+            System.out.println("Recorrido ida recuperado DB:");
+            System.out.println(recorridoIdaAux.toString());
+            System.out.println("Recorrido vuelta recuperado DB:");
+            System.out.println(recorridoVueltaAux.toString());
+            
+            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoIdaAux);
+            recorridoIdaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoVueltaAux);
+            recorridoVueltaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
+            
+            recorridoUnidadSeleccionada = new RespRecorridoUnidadLinea(unidadSeleccionada.getNombre(), recorridoIdaNuevo, recorridoVueltaNuevo);
+//            recorridoUnidades.add(datosRecorridoAux);
+//        }
+        
+//        System.out.println("Recorrido del servicio: ");
+//        System.out.println(recorridoUnidades.toArray());
+        return recorridoUnidadSeleccionada;
+    }
+    
+    public void deleteRecorrido(String nombreUnidad){
+        System.out.println("nombre de la unidad a borrar: "+nombreUnidad);
+        
+//        Iterable<UnidadLinea> unidades = repoUniLinea.findAll();
+//        List<UnidadLinea> listUnidades = new ArrayList<>();
+//        unidades.forEach(listUnidades::add);
+//        for (UnidadLinea unidad : listUnidades) {
+//            System.out.println(unidad.toString());
+//        }
+        
+        UnidadLinea unidad = repoUniLinea.findByNombre(nombreUnidad).get();
+        if(unidad == null){
+            System.out.println("La unidad del recorrido no existe");
+        }
+        
+        unidad.setRecorridoIda(null);
+        unidad.setRecorridoVuelta(null);
+        
+        repoUniLinea.save(unidad);
     }
     
     // ************************************ SOPORTE ************************************

@@ -11,6 +11,7 @@ import com.alex.miruta2018.model.support.RespRecorridoUnidadLinea;
 import com.alex.miruta2018.model.support.UnidadTransporteCreate;
 import com.alex.miruta2018.model.support.UnidadTransporteUpdate;
 import com.alex.miruta2018.services.UnidadLineaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,11 +71,18 @@ public class UnidadLineaBusiness {
     }
     
     @RequestMapping(value = "/recorrido", method = GET)
-    public ResponseEntity<RespRecorridoUnidadLinea> getRecorrido(@RequestParam(value = "id", required = false) Long id) {
+    public ResponseEntity<RespRecorridoUnidadLinea> getRecorrido(@RequestParam(value = "id", required = false) Long id) throws JsonProcessingException {
         if(id == null){
             return new ResponseEntity(serviceUnidadLinea.getAllRecorrido(), HttpStatus.OK);
         }
         return new ResponseEntity(serviceUnidadLinea.getRecorridoById(id), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/deleteRecorrido", method = POST)
+    public ResponseEntity deleteRecorrido(@RequestBody String nombreUnidad) {
+//        System.out.println();
+        serviceUnidadLinea.deleteRecorrido(nombreUnidad);
+        return new ResponseEntity(HttpStatus.OK);
     }
     
     // ************************************ SOPORTE ************************************
