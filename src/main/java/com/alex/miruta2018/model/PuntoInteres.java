@@ -11,10 +11,12 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +28,10 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "puntointeres")
 @Table(name = "puntointeres")
 public class PuntoInteres implements Serializable{
+    
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tipointeres_id", nullable = false)
+    private TipoInteres tipointeres;
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,24 +47,32 @@ public class PuntoInteres implements Serializable{
     private Point coordenada;
     
     @ManyToOne
-    @JoinColumn(name="Usuario_ID", nullable = false)
+    @JoinColumn(name="Usuario_ID", nullable = true)
     @JsonBackReference
     private Usuario usuario;
     
     public PuntoInteres(){        
     }
     
-    public PuntoInteres(String nombre, Point coordenada, Usuario usuario){
+    public PuntoInteres(String nombre, Point coordenada, Usuario usuario, TipoInteres tipo){
         this.nombre = nombre;
         this.coordenada = coordenada;
         this.usuario = usuario;
+        this.tipointeres = tipo;
     }
     
-    public PuntoInteres(long id, String nombre, Point coordenada, Usuario usuario){
+    public PuntoInteres(String nombre, Point coordenada, TipoInteres tipo){
+        this.nombre = nombre;
+        this.coordenada = coordenada;
+        this.tipointeres = tipo;
+    }
+    
+    public PuntoInteres(long id, String nombre, Point coordenada, Usuario usuario, TipoInteres tipo){
         this.id = id;
         this.nombre = nombre;
         this.coordenada = coordenada;
         this.usuario = usuario;
+        this.tipointeres = tipo;
     }
 
     public Long getId() {
@@ -87,6 +101,14 @@ public class PuntoInteres implements Serializable{
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public TipoInteres getTipointeres() {
+        return tipointeres;
+    }
+
+    public void setTipointeres(TipoInteres tipointeres) {
+        this.tipointeres = tipointeres;
     }
     
     @Override

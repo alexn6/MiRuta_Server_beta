@@ -100,20 +100,15 @@ public class UnidadLineaService {
         // creamos el recorrido de ida
         LineString recorridoGeom = factoryGeom.createLineString(coordenadas);
         recorridoGeom.setSRID(4326);
-//        LineString recorridoGeom = new LineString(coordenadas);
-//        System.out.println("RecorridoNuevoService ---> Se creo el reco IDA");
         unidad.setRecorridoIda(recorridoGeom);
-//        System.out.println("RecorridoNuevoService ---> Se seteo el reco IDA");
         System.out.println(recorridoGeom);
         
         coordenadas = RecorridoService.getRecorridoPointJTS(recorrido.getPuntos_vuelta());
         // creamos el recorrido de ida
         recorridoGeom = factoryGeom.createLineString(coordenadas);
         recorridoGeom.setSRID(4326);
-//        System.out.println("RecorridoNuevoService ---> Se creo el reco VUELTA");
         System.out.println(recorridoGeom);
         unidad.setRecorridoVuelta(recorridoGeom);
-//        System.out.println("RecorridoNuevoService ---> Se seteo el reco VUELTA");
         
         return repoUniLinea.save(unidad);
     }
@@ -138,16 +133,6 @@ public class UnidadLineaService {
         for (UnidadLinea unidad : listUnidades) {
             recorridoIdaAux = unidad.getRecorridoIda();
             recorridoVueltaAux = unidad.getRecorridoVuelta();
-//            System.out.println("Recorrido ida recuperado DB:");
-//            System.out.println(recorridoIdaAux.toString());
-//            System.out.println("Recorrido vuelta recuperado DB:");
-//            System.out.println(recorridoVueltaAux.toString());
-//            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoIdaAux);
-//            recorridoIdaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
-//            jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoVueltaAux);
-//            recorridoVueltaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
-//            datosRecorridoAux = new RespRecorridoUnidadLinea(unidad.getNombre(), recorridoIdaNuevo, recorridoVueltaNuevo);
-//            recorridoUnidades.add(datosRecorridoAux);
             
             if(recorridoIdaAux != null){
                 System.out.println("Recorrido ida recuperado DB:");
@@ -174,14 +159,11 @@ public class UnidadLineaService {
         
         // recuperamos todas las unidades y le sacamos los datos requeridos para enviar al cliente
         UnidadLinea unidadSeleccionada = repoUniLinea.findById(idUnidad).get();
-//        List<UnidadLinea> listUnidades = new ArrayList<>();
         // buscamos el recorrido ruta de cada recorrido
         String jsonResponseRecorridoRuta;
-//        unidades.forEach(listUnidades::add);
         LineString recorridoIdaAux, recorridoVueltaAux;
         LineString recorridoIdaNuevo, recorridoVueltaNuevo;
         
-//        RespRecorridoUnidadLinea datosRecorridoAux;
         
         // vamos creando los nuevos recorrido para mandarlos
 //        for (UnidadLinea unidad : listUnidades) {

@@ -17,15 +17,24 @@ public class PuntoInteresCreate implements Serializable{
     private double lat;
     private double lon;
     private long idUsuario;
+    private long idTipo;
     
     public PuntoInteresCreate(){        
     }
     
-    public PuntoInteresCreate(String nombre, double lat, double lon, long idUsuario){
+    public PuntoInteresCreate(String nombre, double lat, double lon, long idUsuario, long idTipo){
         this.nombre = nombre;
         this.lat = lat;
         this.lon = lon;
         this.idUsuario = idUsuario;
+        this.idTipo = idTipo;
+    }
+    
+    public PuntoInteresCreate(String nombre, double lat, double lon, long idTipo){
+        this.nombre = nombre;
+        this.lat = lat;
+        this.lon = lon;
+        this.idTipo = idTipo;
     }
 
     public String getNombre() {
@@ -60,4 +69,12 @@ public class PuntoInteresCreate implements Serializable{
         this.idUsuario = idUsuario;
     }
 
+    public long getIdTipo() {
+        return idTipo;
+    }
+
+    public void setIdTipo(long idTipo) {
+        this.idTipo = idTipo;
+    }
+    
 }

@@ -55,4 +55,24 @@ public class PtoInteresBusiness {
     public ResponseEntity<PuntoInteres> updatePtoInteres(@RequestBody PuntoInteresUpdate punto) {
         return new ResponseEntity(servicePtoInteres.update(punto), HttpStatus.OK);
     }
+    
+    // *****************************************************************************
+    // ******************************** SOPORTE ************************************
+    
+    @RequestMapping(value = "/byType", method = GET)
+    public ResponseEntity<PuntoInteres> ptoInteresByType(@RequestParam(value = "idtipo", required=false) Long idtipo) {
+        if(idtipo == null){
+            return new ResponseEntity(servicePtoInteres.getAll(), HttpStatus.OK);
+        }
+        return new ResponseEntity(servicePtoInteres.getByType(idtipo), HttpStatus.OK);
+//        return new ResponseEntity(servicePtoInteres.getByTipo(idtipo), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/byNameType", method = GET)
+    public ResponseEntity<PuntoInteres> ptoInteresByNameType(@RequestParam(value = "tipo", required=false) String tipo) {
+        if(tipo.equals("todos")){
+            return new ResponseEntity(servicePtoInteres.getAll(), HttpStatus.OK);
+        }
+        return new ResponseEntity(servicePtoInteres.getByNameType(tipo), HttpStatus.OK);
+    }
 }

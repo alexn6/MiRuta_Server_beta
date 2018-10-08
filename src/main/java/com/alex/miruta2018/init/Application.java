@@ -7,6 +7,7 @@ package com.alex.miruta2018.init;
 
 import com.alex.miruta2018.model.Empresa;
 import com.alex.miruta2018.model.PuntoInteres;
+import com.alex.miruta2018.model.TipoInteres;
 import com.alex.miruta2018.model.UnidadLinea;
 import com.alex.miruta2018.model.Usuario;
 import com.alex.miruta2018.repo.crud.RepositorioEmpresaCrud;
@@ -15,6 +16,7 @@ import com.alex.miruta2018.repo.crud.RepositorioUnidadLineaCrud;
 import com.alex.miruta2018.repo.crud.RepositorioUsuarioCrud;
 import com.alex.miruta2018.services.ConsumeServiceWeb;
 import com.alex.miruta2018.services.EmpresaService;
+import com.alex.miruta2018.services.TipoInteresService;
 import com.alex.miruta2018.services.UsuarioService;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -99,6 +101,29 @@ public class Application {
 //            log.info("*********************************************");
         };
     }
+
+//    ####################################################################################
+//    ################################## TipoInteres #####################################
+    @Bean
+    public CommandLineRunner cargaInicialTipoInteres(TipoInteresService service) {
+        return (args) -> {
+            
+//            TipoInteres tipo;
+//            
+//            tipo = new TipoInteres("carga");
+//            service.create(tipo);
+//            
+//            tipo = new TipoInteres("traslado");
+//            service.create(tipo);
+//
+//            // buscamos todas las paradas a modo de prueba
+//            log.info("**** Tipos guardados: ****");
+//            for (TipoInteres tipointeres : service.getAll()) {
+//                log.info(tipointeres.toString());
+//            }
+//            log.info("*********************************************");
+        };
+    }
     
         
 //    ####################################################################################
@@ -133,13 +158,13 @@ public class Application {
     public CommandLineRunner cargaInicialUnidadLinea(RepositorioUnidadLineaCrud repoUniLinea, RepositorioEmpresaCrud repoEmpresa) {
         return (args) -> {
             
-            UnidadLinea unidad;
+//            UnidadLinea unidad;
 //            unidad = new UnidadLinea("Linea1", LocalTime.of(8, 0), LocalTime.of(22, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
 //            repoUniLinea.save(unidad);
 //            
 //            unidad = new UnidadLinea("Linea2", LocalTime.of(7, 30), LocalTime.of(22, 15), 15, 11.00f, repoEmpresa.findByNombre("Ceferino").get());
 //            repoUniLinea.save(unidad);
-            
+//            
 //            unidad = new UnidadLinea("Linea3", LocalTime.of(8, 0), LocalTime.of(21, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
 //            repoUniLinea.save(unidad);
 
