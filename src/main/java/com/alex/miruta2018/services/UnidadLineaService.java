@@ -155,7 +155,7 @@ public class UnidadLineaService {
     
     public RespRecorridoUnidadLinea getRecorridoById(Long idUnidad) throws JsonProcessingException{
         
-        RespRecorridoUnidadLinea recorridoUnidadSeleccionada;
+        RespRecorridoUnidadLinea recorridoUnidadSeleccionada = null ;
         
         // recuperamos todas las unidades y le sacamos los datos requeridos para enviar al cliente
         UnidadLinea unidadSeleccionada = repoUniLinea.findById(idUnidad).get();
@@ -164,24 +164,22 @@ public class UnidadLineaService {
         LineString recorridoIdaAux, recorridoVueltaAux;
         LineString recorridoIdaNuevo, recorridoVueltaNuevo;
         
+        recorridoIdaAux = unidadSeleccionada.getRecorridoIda();
+        recorridoVueltaAux = unidadSeleccionada.getRecorridoVuelta();
         
-        // vamos creando los nuevos recorrido para mandarlos
-//        for (UnidadLinea unidad : listUnidades) {
-            recorridoIdaAux = unidadSeleccionada.getRecorridoIda();
-            recorridoVueltaAux = unidadSeleccionada.getRecorridoVuelta();
+        if((recorridoIdaAux != null) && (recorridoVueltaAux != null)){
             System.out.println("Recorrido ida recuperado DB:");
             System.out.println(recorridoIdaAux.toString());
             System.out.println("Recorrido vuelta recuperado DB:");
             System.out.println(recorridoVueltaAux.toString());
-            
+
             jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoIdaAux);
             recorridoIdaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
             jsonResponseRecorridoRuta = consumerServicesWeb.getRecorridoRuta(recorridoVueltaAux);
             recorridoVueltaNuevo = factoryGeom.createLineString(RecorridoService.getCoordenadas(jsonResponseRecorridoRuta));
-            
+
             recorridoUnidadSeleccionada = new RespRecorridoUnidadLinea(unidadSeleccionada.getNombre(), recorridoIdaNuevo, recorridoVueltaNuevo);
-//            recorridoUnidades.add(datosRecorridoAux);
-//        }
+        }
         
 //        System.out.println("Recorrido del servicio: ");
 //        System.out.println(recorridoUnidades.toArray());

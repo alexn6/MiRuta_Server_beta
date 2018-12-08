@@ -6,6 +6,7 @@
 package com.alex.miruta2018.business;
 
 import com.alex.miruta2018.model.support.PuntosRuta;
+import com.alex.miruta2018.model.support.PuntosRutaTransporte;
 import com.alex.miruta2018.services.ConsumeServiceWeb;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -41,11 +43,25 @@ public class ApiRoutingBusiness {
     public ResponseEntity<String> getAddressPoint(@RequestParam(value = "lon", required=false) String lon, @RequestParam(value = "lat", required=false) String lat) {
         return new ResponseEntity(serviceRouting.getDirePuntoMasCercano(lon, lat), HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/addressCoord", method = GET)
+    public ResponseEntity<JSONObject> getAddressPointFromCoord(@RequestParam(value = "lon", required=true) String lon, @RequestParam(value = "lat", required=true) String lat) {
+        return new ResponseEntity(serviceRouting.getDireccionCoordenadas(lon, lat), HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/route", method = POST, produces = "application/json")
     public ResponseEntity<LineString> getRoute(@RequestBody PuntosRuta puntos) throws SQLException, JsonProcessingException {
         System.out.println("Entro a getRoute() ----> datos: "+puntos.toString());
         System.out.println("Coord ini: "+puntos.getCoordIni().toString()+" - Coord fin: "+puntos.getCoordFin().toString());
         return new ResponseEntity(serviceRouting.getRuta(puntos.getCoordIni(), puntos.getCoordFin()), HttpStatus.OK);
+    }
+    
+    // devuelve el camino con el medio de transporte seleccionada
+    @RequestMapping(value = "/routeTransport", method = POST, produces = "application/json")
+    public ResponseEntity<LineString> getRouteByTransport(@RequestBody PuntosRutaTransporte datos) throws SQLException, JsonProcessingException {
+        System.out.println("Entro a routetransport() ----> datos: "+datos.toString());
+        System.out.println("Coord ini: "+datos.getCoordIni().toString()+" - Coord fin: "+datos.getCoordFin().toString());
+//        return new ResponseEntity(serviceRouting.getRutaTransporte(datos.getCoordIni(), datos.getCoordFin(), datos.getTransporte()), HttpStatus.OK);
+        return new ResponseEntity(serviceRouting.getRutaTransporteOsrm(datos.getCoordIni(), datos.getCoordFin(), datos.getTransporte()), HttpStatus.OK);
     }
 }

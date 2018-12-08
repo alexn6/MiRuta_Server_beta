@@ -22,7 +22,10 @@ public interface RepositorioPtoInteresJpa extends JpaRepository<PuntoInteres, Lo
 //    List<PuntoInteres> findPtoInteresByType(@Param("idTipo") Long idTipo);
     
     // queries nativas de sql    
-    @Query(value = "SELECT * FROM puntointeres WHERE tipointeres_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM puntointeres WHERE tipointeres_id = ?1 ORDER BY nombre", nativeQuery = true)
     List<PuntoInteres> findPtoInteresByType(Long tipointeres_id);
+    
+    @Query(value = "SELECT * FROM puntointeres ORDER BY nombre", nativeQuery = true)
+    List<PuntoInteres> getAllByName();
     
 }

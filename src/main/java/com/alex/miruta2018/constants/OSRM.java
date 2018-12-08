@@ -11,9 +11,14 @@ package com.alex.miruta2018.constants;
  */
 public class OSRM {
     
+    public static String URL = "route/v1/";
+    
     public static String URL_PUNTO_MAS_CERCANO = "nearest/v1/driving/";
     
     public static String URL_RUTA = "route/v1/driving/";
     
     public static String TIPO_DATO_RUTA_RECIBIDO = "geometries=geojson";
+    
+    public static String PARAM_STEP = "steps=true";
+
 }

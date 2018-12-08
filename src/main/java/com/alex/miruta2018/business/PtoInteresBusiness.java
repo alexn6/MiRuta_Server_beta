@@ -71,7 +71,7 @@ public class PtoInteresBusiness {
     @RequestMapping(value = "/byNameType", method = GET)
     public ResponseEntity<PuntoInteres> ptoInteresByNameType(@RequestParam(value = "tipo", required=false) String tipo) {
         if(tipo.equals("todos")){
-            return new ResponseEntity(servicePtoInteres.getAll(), HttpStatus.OK);
+            return new ResponseEntity(servicePtoInteres.getAllByName(), HttpStatus.OK);
         }
         return new ResponseEntity(servicePtoInteres.getByNameType(tipo), HttpStatus.OK);
     }

@@ -111,12 +111,12 @@ public class PtoInteresService {
         return listPtos;
     }
     
-//    public List<PuntoInteres> getByTipo(Long tipo){
-//        Iterable<PuntoInteres> puntosTipo = repoJpaPtoInteres.findPtoInteresByType(tipo);
-//        List<PuntoInteres> listPtos = new ArrayList<PuntoInteres>();
-//        puntosTipo.forEach(listPtos::add);
-//        
-//        return listPtos;
-//    }
+    public List<PuntoInteres> getAllByName(){
+        Iterable<PuntoInteres> puntosTipo = repoJpaPtoInteres.getAllByName();
+        List<PuntoInteres> listPtos = new ArrayList<PuntoInteres>();
+        puntosTipo.forEach(listPtos::add);
+        
+        return listPtos;
+    }
     
 }
