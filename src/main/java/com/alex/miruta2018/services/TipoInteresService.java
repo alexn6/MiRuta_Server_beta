@@ -37,6 +37,14 @@ public class TipoInteresService {
     }
     
     public TipoInteres create(TipoInteres tipo){
+        List<TipoInteres> rdoExiste = repoJpaTipoInteres.existByName(tipo.getNombre());
+        System.out.println("Rdo create TipoInteres");
+        System.out.println(rdoExiste.toString());
+        if(rdoExiste.size() > 0){
+            System.out.println("El tipo de punto EXISTE!!");
+            // trabajar en los datos que devuelve Mje de error al cliente
+            return null;
+        }
         return repoTipoInteres.save(tipo);
     }
     

@@ -29,12 +29,12 @@ public class TipoPuntoInteresBusiness {
     private TipoInteresService serviceTipoPtoInteres;
     
     @RequestMapping(value = "/create", method = POST)
-    public ResponseEntity<TipoInteres> saveUser(@RequestBody TipoInteres tipo) {
+    public ResponseEntity<TipoInteres> saveTipoInteres(@RequestBody TipoInteres tipo) {
         return new ResponseEntity(serviceTipoPtoInteres.create(tipo), HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = GET)
-    public ResponseEntity<TipoInteres> userById(@RequestParam(value = "id", required=false) Long id) {
+    public ResponseEntity<TipoInteres> tipoInteresById(@RequestParam(value = "id", required=false) Long id) {
         if(id == null){
             return new ResponseEntity(serviceTipoPtoInteres.getAll(), HttpStatus.OK);
         }
@@ -42,14 +42,14 @@ public class TipoPuntoInteresBusiness {
     }
     
     @RequestMapping(value = "/delete", method = POST)
-    public ResponseEntity deleteUser(@RequestParam(value = "id") long id) {
+    public ResponseEntity deleteTipoInteres(@RequestParam(value = "id") long id) {
         // ver como informar q se elimino correctamente al usuario
         serviceTipoPtoInteres.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
     
     @RequestMapping(value = "/update", method = POST)
-    public ResponseEntity<TipoInteres> updateUser(@RequestBody TipoInteres tipo) {
+    public ResponseEntity<TipoInteres> updateTipoInteres(@RequestBody TipoInteres tipo) {
         return new ResponseEntity(serviceTipoPtoInteres.update(tipo), HttpStatus.OK);
     }
     

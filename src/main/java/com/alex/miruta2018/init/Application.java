@@ -113,7 +113,7 @@ public class Application {
 //            tipo = new TipoInteres("carga");
 //            service.create(tipo);
 //            
-//            tipo = new TipoInteres("traslado");
+//            tipo = new TipoInteres("ParadaTaxi/Remis");
 //            service.create(tipo);
 //
 //            // buscamos todas las paradas a modo de prueba
@@ -159,13 +159,13 @@ public class Application {
         return (args) -> {
             
 //            UnidadLinea unidad;
-//            unidad = new UnidadLinea("Linea1", LocalTime.of(8, 0), LocalTime.of(22, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
+//            unidad = new UnidadLinea("Linea1", LocalTime.of(8, 0), LocalTime.of(22, 0), 20, "Por seccion", repoEmpresa.findByNombre("Benitez").get());
 //            repoUniLinea.save(unidad);
 //            
-//            unidad = new UnidadLinea("Linea2", LocalTime.of(7, 30), LocalTime.of(22, 15), 15, 11.00f, repoEmpresa.findByNombre("Ceferino").get());
+//            unidad = new UnidadLinea("Linea2", LocalTime.of(7, 30), LocalTime.of(22, 15), 15, "Precio unico", repoEmpresa.findByNombre("Ceferino").get());
 //            repoUniLinea.save(unidad);
 //            
-//            unidad = new UnidadLinea("Linea3", LocalTime.of(8, 0), LocalTime.of(21, 0), 20, 9.50f, repoEmpresa.findByNombre("Benitez").get());
+//            unidad = new UnidadLinea("Linea3", LocalTime.of(8, 0), LocalTime.of(21, 0), 20, "Por seccion", repoEmpresa.findByNombre("Benitez").get());
 //            repoUniLinea.save(unidad);
 
             // buscamos todas las paradas a modo de prueba

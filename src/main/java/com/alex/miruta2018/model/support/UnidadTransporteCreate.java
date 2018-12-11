@@ -20,12 +20,12 @@ public class UnidadTransporteCreate implements Serializable{
     private int minInicio;
     private int minFin;
     private int frecuencia;
-    private float precioBoleto;
+    private String precioBoleto;
     
     public UnidadTransporteCreate(){        
     }
     
-    public UnidadTransporteCreate(String nombre, int horaInicio, int minInicio, int horaFin, int minFin, int frecuenacia, float precioBoleto, long idEmpresa){
+    public UnidadTransporteCreate(String nombre, int horaInicio, int minInicio, int horaFin, int minFin, int frecuenacia, String precioBoleto, long idEmpresa){
         this.nombre = nombre;
         this.idEmpresa = idEmpresa;
         this.horaInicio = horaInicio;
@@ -92,11 +92,11 @@ public class UnidadTransporteCreate implements Serializable{
         this.frecuencia = frecuencia;
     }
 
-    public float getPrecioBoleto() {
+    public String getPrecioBoleto() {
         return precioBoleto;
     }
 
-    public void setPrecioBoleto(float precioBoleto) {
+    public void setPrecioBoleto(String precioBoleto) {
         this.precioBoleto = precioBoleto;
     }
     

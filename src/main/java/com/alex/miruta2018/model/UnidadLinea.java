@@ -62,12 +62,12 @@ public class UnidadLinea implements Serializable{
     private int frecuencia;
     
     @Column(name = "precioboleto")
-    private float precioBoleto;
+    private String precioBoleto;
     
     public UnidadLinea(){        
     }
     
-    public UnidadLinea(String nombre, LocalTime horaInicio, LocalTime horaFin, int frecuenacia, float precioBoleto, Empresa empresa){
+    public UnidadLinea(String nombre, LocalTime horaInicio, LocalTime horaFin, int frecuenacia, String precioBoleto, Empresa empresa){
         this.nombre = nombre;
         this.empresa = empresa;
         this.horaInicio = horaInicio;
@@ -76,7 +76,7 @@ public class UnidadLinea implements Serializable{
         this.precioBoleto = precioBoleto;
     }
     
-    public UnidadLinea(long id, String nombre, LocalTime horaInicio, LocalTime horaFin, int frecuenacia, float precioBoleto, Empresa empresa){
+    public UnidadLinea(long id, String nombre, LocalTime horaInicio, LocalTime horaFin, int frecuenacia, String precioBoleto, Empresa empresa){
         this.id = id;
         this.nombre = nombre;
         this.empresa = empresa;
@@ -138,11 +138,11 @@ public class UnidadLinea implements Serializable{
         this.frecuencia = frecuencia;
     }
 
-    public float getPrecioBoleto() {
+    public String getPrecioBoleto() {
         return precioBoleto;
     }
 
-    public void setPrecioBoleto(float precioBoleto) {
+    public void setPrecioBoleto(String precioBoleto) {
         this.precioBoleto = precioBoleto;
     }
 
