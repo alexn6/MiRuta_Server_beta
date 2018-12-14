@@ -14,6 +14,7 @@ import com.alex.miruta2018.repo.crud.RepositorioEmpresaCrud;
 import com.alex.miruta2018.repo.crud.RepositorioPtoInteresCrud;
 import com.alex.miruta2018.repo.crud.RepositorioUnidadLineaCrud;
 import com.alex.miruta2018.repo.crud.RepositorioUsuarioCrud;
+import com.alex.miruta2018.repo.queries.RepositorioUnidadLineaJpa;
 import com.alex.miruta2018.services.ConsumeServiceWeb;
 import com.alex.miruta2018.services.EmpresaService;
 import com.alex.miruta2018.services.TipoInteresService;
@@ -21,6 +22,7 @@ import com.alex.miruta2018.services.UsuarioService;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import java.time.LocalTime;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -195,6 +197,24 @@ public class Application {
             String lon2 = "-51.077202";
             String lat2 = "-29.989399";
 //            service.getRuta(lon1, lat1, lon2, lat2);
+        };
+    }
+    
+    @Bean
+    public CommandLineRunner testQueriesPostgis(RepositorioUnidadLineaJpa repoUnidadlInea) {
+        return (args) -> {
+            
+            System.out.println("############################ Testing queries postgis ############################");
+            System.out.println("##################################################################################");
+            
+            List<String> recorridosIda = repoUnidadlInea.allRecorridoIda();
+            
+            for (String recorrido : recorridosIda) {
+                System.out.println(recorrido);
+            }
+            
+            String puntoCercano = repoUnidadlInea.puntoMasCercanoLinea(-65.03249997273089, -42.775145173072815);
+            System.out.println("Punto mas cercano a la linea 2: "+puntoCercano);
         };
     }
 }

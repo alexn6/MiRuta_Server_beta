@@ -33,7 +33,11 @@ public class PtoInteresBusiness {
     
     @RequestMapping(value = "/create", method = POST)
     public ResponseEntity<PuntoInteres> savePointInteres(@RequestBody PuntoInteresCreate punto) {
-        return new ResponseEntity(servicePtoInteres.create(punto), HttpStatus.OK);
+        PuntoInteres rdoCreatePtoInteres = servicePtoInteres.create(punto);
+        if(rdoCreatePtoInteres == null){
+            return new ResponseEntity("Un punto con esa info ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoCreatePtoInteres, HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = GET)
@@ -53,7 +57,11 @@ public class PtoInteresBusiness {
     
     @RequestMapping(value = "/update", method = POST)
     public ResponseEntity<PuntoInteres> updatePtoInteres(@RequestBody PuntoInteresUpdate punto) {
-        return new ResponseEntity(servicePtoInteres.update(punto), HttpStatus.OK);
+        PuntoInteres rdoUpdatePtoInteres = servicePtoInteres.update(punto);
+        if(rdoUpdatePtoInteres == null){
+            return new ResponseEntity("Unpunto con esa info ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoUpdatePtoInteres, HttpStatus.OK);
     }
     
     // *****************************************************************************

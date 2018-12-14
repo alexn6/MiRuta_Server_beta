@@ -30,7 +30,11 @@ public class TipoPuntoInteresBusiness {
     
     @RequestMapping(value = "/create", method = POST)
     public ResponseEntity<TipoInteres> saveTipoInteres(@RequestBody TipoInteres tipo) {
-        return new ResponseEntity(serviceTipoPtoInteres.create(tipo), HttpStatus.OK);
+        TipoInteres rdoTipoInteres = serviceTipoPtoInteres.create(tipo);
+        if(rdoTipoInteres == null){
+            return new ResponseEntity("El tipo ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoTipoInteres, HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = GET)
@@ -50,7 +54,11 @@ public class TipoPuntoInteresBusiness {
     
     @RequestMapping(value = "/update", method = POST)
     public ResponseEntity<TipoInteres> updateTipoInteres(@RequestBody TipoInteres tipo) {
-        return new ResponseEntity(serviceTipoPtoInteres.update(tipo), HttpStatus.OK);
+        TipoInteres rdoTipoInteres = serviceTipoPtoInteres.update(tipo);
+        if(rdoTipoInteres == null){
+            return new ResponseEntity("El tipo ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoTipoInteres, HttpStatus.OK);
     }
     
     // ************************************ SOPORTE ************************************

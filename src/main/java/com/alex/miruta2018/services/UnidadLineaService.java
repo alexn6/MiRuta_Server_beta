@@ -60,6 +60,13 @@ public class UnidadLineaService {
     }
     
     public UnidadLinea create(UnidadTransporteCreate unidad){
+        List<UnidadLinea> rdoExiste = repoUniTransporteQueries.existByName(unidad.getNombre());
+        if(rdoExiste.size() > 0){
+            System.out.println("La unidad ya EXISTE!!");
+            // trabajar en los datos que devuelve Mje de error al cliente
+            return null;
+        }
+        
         Empresa emp = repoEmpresa.findById(unidad.getIdEmpresa()).get();
         UnidadLinea nuevaUnidad = new UnidadLinea(unidad.getNombre(), LocalTime.of(unidad.getHoraInicio(), unidad.getMinInicio()), LocalTime.of(unidad.getHoraFin(), unidad.getMinFin()), unidad.getFrecuencia(), unidad.getPrecioBoleto(), emp);
         System.out.println("idUniTransporte creado: "+nuevaUnidad.getId());
@@ -67,6 +74,12 @@ public class UnidadLineaService {
     }
     
     public UnidadLinea update(UnidadTransporteUpdate unidad){
+        List<UnidadLinea> rdoExiste = repoUniTransporteQueries.existByName(unidad.getNombre());
+        if(rdoExiste.size() > 0){
+            System.out.println("La unidad ya EXISTE!!");
+            // trabajar en los datos que devuelve Mje de error al cliente
+            return null;
+        }
         // asegurar desde el cliente que estos campos correspondan siempre a datos existentes
         UnidadLinea unidadDB = repoUniLinea.findById(unidad.getId()).get();
         Empresa emp = repoEmpresa.findById(unidad.getIdEmpresa()).get();

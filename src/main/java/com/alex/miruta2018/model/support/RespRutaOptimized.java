@@ -15,31 +15,41 @@ import java.util.List;
 public class RespRutaOptimized {
     
     @JsonProperty("route")
-    private List<Object> route;
-    @JsonProperty("info")
-    private List<Object> info;
+    private Object route;
+    @JsonProperty("options")
+    private Object options;
+    @JsonProperty("results")
+    private List<Object> results;
     
     public RespRutaOptimized(){
     }
 
-    public List<Object> getRoute() {
+    public Object getRoute() {
         return route;
     }
 
-    public void setRoute(List<Object> route) {
+    public void setRoute(Object route) {
         this.route = route;
     }
 
-    public List<Object> getInfo() {
-        return info;
+    public Object getOptions() {
+        return options;
     }
 
-    public void setInfo(List<Object> info) {
-        this.info = info;
+    public void setOptions(Object options) {
+        this.options = options;
     }
 
+    public List<Object> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Object> results) {
+        this.results = results;
+    }
+    
     @Override
     public String toString() {
-        return "RespRutaTransporte{" + "routes=" + route + ", info=" + info;
+        return "RespRutaTransporte{" + "routes=" + route + ", options=" + options;
     }
 }

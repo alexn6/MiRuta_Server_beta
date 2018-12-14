@@ -38,7 +38,13 @@ public class UnidadLineaBusiness {
     // ******************************************************************************
     @RequestMapping(value = "/create", method = POST)
     public ResponseEntity<UnidadLinea> saveUniTransporte(@RequestBody UnidadTransporteCreate unidad) {
-        return new ResponseEntity(serviceUnidadLinea.create(unidad), HttpStatus.OK);
+        UnidadLinea rdoCreateUnidad = serviceUnidadLinea.create(unidad);
+//        new ResponseEntity()
+        if(rdoCreateUnidad == null){
+            return new ResponseEntity("Una unidad con ese nombre ya existe", HttpStatus.BAD_REQUEST);
+//            .body("Year of birth cannot be in the future");
+        }
+        return new ResponseEntity(rdoCreateUnidad, HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = GET)
@@ -58,7 +64,11 @@ public class UnidadLineaBusiness {
     
     @RequestMapping(value = "/update", method = POST)
     public ResponseEntity<UnidadLinea> updateUniTransporte(@RequestBody UnidadTransporteUpdate unidad) {
-        return new ResponseEntity(serviceUnidadLinea.update(unidad), HttpStatus.OK);
+        UnidadLinea rdoUpdateUnidad = serviceUnidadLinea.update(unidad);
+        if(rdoUpdateUnidad == null){
+            return new ResponseEntity("Una unidad con ese nombre ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoUpdateUnidad, HttpStatus.OK);
     }
     
     // ******************************* *Secundarias ************************************

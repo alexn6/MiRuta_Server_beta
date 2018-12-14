@@ -8,11 +8,13 @@ package com.alex.miruta2018.services;
 import com.alex.miruta2018.constants.MAPQUEST;
 import com.alex.miruta2018.constants.OSRM;
 import com.alex.miruta2018.model.support.Location;
+import com.alex.miruta2018.model.support.RespDataRute;
 import com.alex.miruta2018.model.support.RespDireFromCoord;
 import com.alex.miruta2018.model.support.RespDireccionPunto;
 import com.alex.miruta2018.model.support.RespPuntoMasCercano;
 import com.alex.miruta2018.model.support.RespRuta;
 import com.alex.miruta2018.model.support.RespRutaOptimized;
+import com.alex.miruta2018.support.CollectorDataResponseRoute;
 import com.alex.miruta2018.support.ConvertResponseWebSrevice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -182,14 +184,16 @@ public class ConsumeServiceWeb {
         
     }
     
-    public String getRutaTransporte(List<String> puntoIni, List<String> puntoFin, String transport) throws SQLException, JsonProcessingException{
+    public JSONObject getRutaTransporte(List<String> puntoIni, List<String> puntoFin, String typeTransport) throws SQLException, JsonProcessingException{
         
 //        String urlService = OSRM.URL +transport+ "/"+ puntoIni.get(0) + "," + puntoIni.get(1) +
 //                ";" + puntoFin.get(0) + "," + puntoFin.get(1)+"?"+ OSRM.PARAM_STEP + "&" +OSRM.TIPO_DATO_RUTA_RECIBIDO;
 //        String urlService = MAPQUEST.RUTA_OPTIMIZADA + "?key=" +MAPQUEST_KEY+ "&json={\"locations\":[\""
 //                +puntoIni.get(1)+ "," +puntoIni.get(0)+ "\",\"" +puntoFin.get(1)+ "," +puntoFin.get(0)+ "\"]}";
+        // generalize es para que nos devuelva las coordenadas de la ruta
         String urlService = MAPQUEST.RUTA + "?key=" +MAPQUEST_KEY+ "&from="
-                +puntoIni.get(1)+ "," +puntoIni.get(0)+ "&to=" +puntoFin.get(1)+ "," +puntoFin.get(0);
+                +puntoIni.get(1)+ "," +puntoIni.get(0)+ "&to=" +puntoFin.get(1)+ "," +puntoFin.get(0) +
+                "&generalize=0&locale=es_ES&routeType=" +typeTransport;
         
         System.out.println("Url service RUTA TRANSPORTE: " +urlService);
         
@@ -203,20 +207,62 @@ public class ConsumeServiceWeb {
 
         System.out.println("Locations TODO de la ruta: "+datosRuta);
         System.out.println("Locations distance de la ruta: "+datosRuta.get("distance"));
+//        Object strLocations = datosRuta.get("locations");
+        
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String stringLocations = ow.writeValueAsString(datosRuta.get("locations"));
+        
+        ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        System.out.println(" = = = = LEGS CORTADO = = = = ");
+        String dataJsonLegs = ow.writeValueAsString(datosRuta.get("legs"));
+        System.out.println(dataJsonLegs);
+        
+        ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String dataJsonShape = ow.writeValueAsString(datosRuta.get("shape"));
+//        System.out.println(" = = = = SHAPE CORTADO = = = = ");
+//        System.out.println(dataJsonShape);
+        
+        JSONObject coordenadas = CollectorDataResponseRoute.getDataCoordinates(dataJsonShape);
+        System.out.println(" = = = = COORDENDAS OBTENIDAS = = = = ");
+        System.out.println(coordenadas);
+        
+//        System.out.println(stringLocations);
+//        
+//        List<String> arrayLocations = Arrays.asList(stringLocations.split(","));
+        
+//        System.out.println("Tamaño de location cortado: "+arrayLocations.size());
+        
+//        for (String location : arrayLocations) {
+//            System.out.println(location);
+//        }
 //        System.out.println("Locations de la ruta: "+datosRuta.get("locations"));
         
-        // pasamos el dato a json
-//        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-//        String jsonResponse = ow.writeValueAsString(datosRuta.get("locations"));
+        // ############################# TRATANDO EL RDO ####################################
+//        String loc1 = stringLocations.substring(1, 45);
+//        List<String> arrayAux = Arrays.asList(loc1.split("\\r?\\n"));
+//        List<String> loc1 = arrayLocations.subList(0, 20);
         
-        // ############################# PRUEBA ####################################
-//        System.out.println("JsonResponse: "+jsonResponse);
-//        System.out.println("Tamaño JsonResponse: "+jsonResponse.length());
+//        for(String dato : loc1) {
+//            System.out.println(dato);
+//        }
+//        
+//        System.out.println("====== Datos cortados ======");
+//        System.out.println(loc1.get(4));
+//        System.out.println(loc1.get(7));
+//        System.out.println(loc1.get(13));
+//        System.out.println(loc1.get(18));
+//        System.out.println(loc1.get(19));
+        
+        List<RespDataRute> infoRuta = CollectorDataResponseRoute.getDataLocations(stringLocations);
+        System.out.println("Lista conseguida: ");
+        for (RespDataRute info : infoRuta) {
+            System.out.println(info.toString());
+        }
         //##########################################################################
         
-        String jsonResponse = "datojson";
+//        String jsonResponse = "datojson";
         
-        return jsonResponse;
+        return coordenadas;
         
     }
     

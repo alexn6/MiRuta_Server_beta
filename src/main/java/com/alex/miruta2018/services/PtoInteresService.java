@@ -51,27 +51,37 @@ public class PtoInteresService {
     }
     
     public PuntoInteres create(PuntoInteresCreate punto){
-        Usuario usuario;
-        PuntoInteres nuevoPunto;
         TipoInteres tipo_interes;
         
         tipo_interes = repoCrudTipoInteres.findById(punto.getIdTipo()).get();
         
-        if(!repoCrudUsuario.existsById(punto.getIdUsuario())){
-            System.err.println("El usuario ingresado no se encuentra en la DB.!!!!!");
-//            tipo_interes = repoCrudTipoInteres.findById(punto.getIdTipo()).get();
-            nuevoPunto = new PuntoInteres(punto.getNombre(), fabricaGeom.createPoint(new Coordinate(punto.getLat(), punto.getLon())), tipo_interes);
+//        if(!repoCrudUsuario.existsById(punto.getIdUsuario())){
+//            System.err.println("El usuario ingresado no se encuentra en la DB.!!!!!");
+//            nuevoPunto = new PuntoInteres(punto.getNombre(), fabricaGeom.createPoint(new Coordinate(punto.getLat(), punto.getLon())), tipo_interes);
+//        }
+//        else{
+//            usuario = repoCrudUsuario.findById(punto.getIdUsuario()).get();
+//            nuevoPunto = new PuntoInteres(punto.getNombre(), fabricaGeom.createPoint(new Coordinate(punto.getLat(), punto.getLon())), usuario, tipo_interes);
+//        }
+        List<PuntoInteres> rdoExiste = repoJpaPtoInteres.existByNameType(punto.getNombre(), punto.getIdTipo());
+        if(rdoExiste.size() > 0){
+            System.out.println("La punto interes ya EXISTE!!");
+            // trabajar en los datos que devuelve Mje de error al cliente
+            return null;
         }
-        else{
-            usuario = repoCrudUsuario.findById(punto.getIdUsuario()).get();
-//            tipo_interes = repoCrudTipoInteres.findById(punto.getIdTipo()).get();
-            nuevoPunto = new PuntoInteres(punto.getNombre(), fabricaGeom.createPoint(new Coordinate(punto.getLat(), punto.getLon())), usuario, tipo_interes);
-        }
+        PuntoInteres nuevoPunto = new PuntoInteres(punto.getNombre(), fabricaGeom.createPoint(new Coordinate(punto.getLat(), punto.getLon())), tipo_interes);
         return repoCrudPtoInteres.save(nuevoPunto);
     }
     
     // se actualizan solo los datos simples del punto, el id y el usuario no se cambian
     public PuntoInteres update(PuntoInteresUpdate punto){
+        
+        List<PuntoInteres> rdoExiste = repoJpaPtoInteres.existByNameType(punto.getNombre(), punto.getIdTipointeres());
+        if(rdoExiste.size() > 0){
+            System.out.println("El punto interes ya EXISTE!!");
+            // trabajar en los datos que devuelve Mje de error al cliente
+            return null;
+        }
 
         PuntoInteres puntoDB = repoCrudPtoInteres.findById(punto.getId()).get();
 

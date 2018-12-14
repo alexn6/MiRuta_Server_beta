@@ -6,6 +6,7 @@
 package com.alex.miruta2018.business;
 
 import com.alex.miruta2018.model.Empresa;
+import com.alex.miruta2018.model.TipoInteres;
 import com.alex.miruta2018.services.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,11 @@ public class EmpresaBusiness {
     
     @RequestMapping(value = "/create", method = POST)
     public ResponseEntity<Empresa> saveCompany(@RequestBody Empresa empresa) {
-        return new ResponseEntity(serviceEmpresa.create(empresa), HttpStatus.OK);
+        Empresa rdoEmpresa = serviceEmpresa.create(empresa);
+        if(rdoEmpresa == null){
+            return new ResponseEntity("La empresa ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoEmpresa, HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = GET)
@@ -50,7 +55,11 @@ public class EmpresaBusiness {
     
     @RequestMapping(value = "/update", method = POST)
     public ResponseEntity<Empresa> updateCompany(@RequestBody Empresa empresa) {
-        return new ResponseEntity(serviceEmpresa.update(empresa), HttpStatus.OK);
+        Empresa rdoEmpresa = serviceEmpresa.update(empresa);
+        if(rdoEmpresa == null){
+            return new ResponseEntity("La empresa ya existe", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(rdoEmpresa, HttpStatus.OK);
     }
 }
 

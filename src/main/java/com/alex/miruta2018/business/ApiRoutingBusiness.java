@@ -58,10 +58,9 @@ public class ApiRoutingBusiness {
     
     // devuelve el camino con el medio de transporte seleccionada
     @RequestMapping(value = "/routeTransport", method = POST, produces = "application/json")
-    public ResponseEntity<LineString> getRouteByTransport(@RequestBody PuntosRutaTransporte datos) throws SQLException, JsonProcessingException {
+    public ResponseEntity<JSONObject> getRouteByTransport(@RequestBody PuntosRutaTransporte datos) throws SQLException, JsonProcessingException {
         System.out.println("Entro a routetransport() ----> datos: "+datos.toString());
         System.out.println("Coord ini: "+datos.getCoordIni().toString()+" - Coord fin: "+datos.getCoordFin().toString());
-//        return new ResponseEntity(serviceRouting.getRutaTransporte(datos.getCoordIni(), datos.getCoordFin(), datos.getTransporte()), HttpStatus.OK);
-        return new ResponseEntity(serviceRouting.getRutaTransporteOsrm(datos.getCoordIni(), datos.getCoordFin(), datos.getTransporte()), HttpStatus.OK);
+        return new ResponseEntity(serviceRouting.getRutaTransporte(datos.getCoordIni(), datos.getCoordFin(), datos.getTransporte()), HttpStatus.OK);
     }
 }
